@@ -9,6 +9,7 @@ class ToDoView(View):
         return HttpResponse('<ul>'
                             '<li>Установить python</li>'
                             '<li>Установить django</li>'
+                            '<li>Загуглить как это сделать через винду</li>'
                             '<li>Запустить сервер</li>'
                             '<li>Порадоваться результату</li>'
                             '</ul>')
