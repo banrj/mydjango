@@ -4,6 +4,11 @@ from django.views.generic import TemplateView
 from .forms import ServiceForm, FaceForm
 
 
+class ClassObj:
+    count_get = 0
+    count_post = 0
+
+
 class Advertisement(View):
     def __init__(self):
         self.services = [
@@ -15,25 +20,18 @@ class Advertisement(View):
         super(Advertisement, self).__init__()
 
     def get(self, request):
-        count = request.session.get('count')
-        if not count:
-            request.session['count'] = 1
-        else:
-            request.session['count'] += 1
+        print('get')
+        ClassObj.count_get += 1
         user_form = ServiceForm()
         return render(request, "advertisement/advertisement.html", context={'services': self.services,
                                                                             'user_form': user_form,
-                                                                            'count': count})
+                                                                            'count_get': ClassObj.count_get,
+                                                                            'count_post': ClassObj.count_post})
 
     def post(self, request):
-        request.session['count'] += 1
-        user_form = ServiceForm(request.POST)
-
-        if user_form.is_valid():
-            self.take_argument(user_form)
-
-    def take_argument(self, new_argument):
-        self.services.append(new_argument)
+        print("post")
+        ClassObj.count_post += 1
+        return render(request, "advertisement/accept_post.html", {})
 
 
 class Contacts(TemplateView):
@@ -70,7 +68,11 @@ class Face(View):
         return render(request, 'advertisement/web_face.html', {'user_form': user_form})
 
 
-def accept(request, *args, **kwargs):
-    return render(request, 'advertisement/accept_post.html', {})
+class Accept(View):
+    def get(self, request):
+        return render(request, 'advertisement/accept_post.html', {})
 
+    def post(self, request):
+        ClassObj.count_post += 1
+        return render(request, 'advertisement/accept_post.html', {})
 
