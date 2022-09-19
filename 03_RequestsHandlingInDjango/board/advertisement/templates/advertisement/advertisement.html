@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-ru">
+<head>
+    <meta charset="UTF-8">
+    <title>advertisement</title>
+</head>
+<body>
+   <ul>
+        {% for service in services %}
+            <li>{{ service }}</li>
+        {% endfor %}
+   </ul>
+   <form action="accept_post/" method="post">
+       {% csrf_token %}
+       {{ user_form.as_p }}
+       <button type="submit">Добавить</button>
+   </form>
+    <h3>
+        GET: {{ count_get }}
+        POST: {{ count_post }}
+    </h3>
+</body>
+</html>

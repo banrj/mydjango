@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IT-Banrj</title>
+</head>
+<body>
+    <form action="/" method="get">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <button>Найти</button>
+   </form>
+</body>
+</html>
