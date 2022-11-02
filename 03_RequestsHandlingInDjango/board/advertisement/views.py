@@ -23,7 +23,7 @@ class Advertisement(View):
         print('get')
         ClassObj.count_get += 1
         user_form = ServiceForm()
-        return render(request, "advertisement/advertisement.html", context={'services': self.services,
+        return render(request, "advertisements_app/advertisement_list.html", context={'services': self.services,
                                                                             'user_form': user_form,
                                                                             'count_get': ClassObj.count_get,
                                                                             'count_post': ClassObj.count_post})
@@ -31,11 +31,11 @@ class Advertisement(View):
     def post(self, request):
         print("post")
         ClassObj.count_post += 1
-        return render(request, "advertisement/accept_post.html", {})
+        return render(request, "advertisements_app/accept_post.html", {})
 
 
 class Contacts(TemplateView):
-    template_name = 'advertisement/contacts.html'
+    template_name = 'advertisements_app/contacts.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,7 +47,7 @@ class Contacts(TemplateView):
 
 
 class About(TemplateView):
-    template_name = 'advertisement/about.html'
+    template_name = 'advertisements_app/about.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,14 +65,14 @@ class Face(View):
 
     def get(self, request):
         user_form = FaceForm()
-        return render(request, 'advertisement/web_face.html', {'user_form': user_form})
+        return render(request, 'advertisements_app/web_face.html', {'user_form': user_form})
 
 
 class Accept(View):
     def get(self, request):
-        return render(request, 'advertisement/accept_post.html', {})
+        return render(request, 'advertisements_app/accept_post.html', {})
 
     def post(self, request):
         ClassObj.count_post += 1
-        return render(request, 'advertisement/accept_post.html', {})
+        return render(request, 'advertisements_app/accept_post.html', {})
 
