@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{object.title}}</title>
+</head>
+<body>
+  <h1>{{object.title}}</h1>
+   <ul>
+        <li>
+           (Цена: {{object.price}}) rub.
+        </li>
+     <li>
+       {{object.options}}
+     </li>
+     <li>
+        {{object.status}}
+     </li>
+     <li>
+        {{object.owner.name}} {{object.owner.phone_number}}
+     </li>
+     <li>
+        {{ object.views_count}}
+     </li>
+    </ul>
+
+</body>
+</html>
