@@ -11,4 +11,3 @@ class AdvertisementsListView(ListView):
 
 class AdvertisementDetailVIew(DetailView):
     model = Advertisement
-

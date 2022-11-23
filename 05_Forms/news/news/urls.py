@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from app_news.views import NewsFormView, NewsEditFormView, NewsWallListView, NewsDetailView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app_news.urls'))
+    path('', NewsWallListView.as_view()),
+    path('news/<int:pk>', NewsDetailView.as_view(), name='news_detail'),
+    path('news', NewsFormView.as_view()),
+    path('<int:news_id>/edit', NewsEditFormView.as_view())
+
 ]

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ news.title }}</title>
+</head>
+<body>
+    <h1>{{ news.title }}</h1>
+    <p>     Описание: {{ news.options }}</p>
+    <p>     {{news.flag}}</p>
+    <p>     Дата публикации: {{ news.created_at }}  Дата обновления: {{ news.updated_at }}</p>
+    <p>Количество коментариев ({{ news.comment_news.all.count}})</p>
+    <hr>
+
+    <ul>
+        {% for comment in news.comment_news.all %}
+
+        <li>
+        <p>{{  comment.name}}</p>
+        <p>{{  comment.text}}</p>
+        </li>
+
+
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <h2>Add a new comment</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>
