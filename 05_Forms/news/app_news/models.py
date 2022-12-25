@@ -13,8 +13,12 @@ class News(models.Model):
         db_table = 'News'
         ordering = ['created_at']
 
+    def __str__(self):
+        return f'{self.title}'
+
 
 class Comments(models.Model):
+
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=40, verbose_name='Имя пользователя')
     text = models.TextField(max_length=1000, verbose_name='Текст')
@@ -24,3 +28,6 @@ class Comments(models.Model):
     class Meta:
         db_table = 'Comments'
         ordering = ['created_at']
+
+    def get_short_text(self):
+        return f'{self.text[:15]}...'
