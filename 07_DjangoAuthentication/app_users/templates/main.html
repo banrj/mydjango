@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MAin PAge</title>
+</head>
+<body>
+    <h1>Privet ti na glavnoi stranice</h1>
+    {% if request.user.is_authenticated %}
+        <h3>Добро пожаловать на сайт {{ request.user.username }}</h3>
+    {% else %}
+        <h3>ВЫ не зарегестрированный на нашем сайте.</h3>
+        <a href="{% url 'login' %}">Войти</a>
+    {%endif%}
+</body>
+</html>

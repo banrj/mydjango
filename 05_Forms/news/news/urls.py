@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from app_news.views import NewsFormView, NewsEditFormView, NewsWallListView, NewsDetailView
+from app_news.views import NewsFormView, NewsEditFormView, NewsWallListView, NewsDetailView, MyLoginView, MyLogoutView
 
 
 urlpatterns = [
@@ -23,6 +23,7 @@ urlpatterns = [
     path('', NewsWallListView.as_view()),
     path('news/<int:pk>', NewsDetailView.as_view(), name='news_detail'),
     path('news', NewsFormView.as_view()),
-    path('<int:news_id>/edit', NewsEditFormView.as_view())
-
+    path('<int:news_id>/edit', NewsEditFormView.as_view()),
+    path('login/', MyLoginView.as_view(), name='login'),
+    path('logout/', MyLogoutView.as_view(), name='logout'),
 ]

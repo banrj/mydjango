@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app_users',
+    
 ]
 
 MIDDLEWARE = [
@@ -72,6 +74,7 @@ WSGI_APPLICATION = 'djauth.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
 
 DATABASES = {
     'default': {
@@ -118,3 +121,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+LOGIN_REDIRECT_URL = '/'
+
+SESSION_COOKIE_AGE = 30 * 24 * 60 * 60
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False

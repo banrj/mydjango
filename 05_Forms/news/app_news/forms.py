@@ -14,3 +14,9 @@ class CommentsModelForm(forms.ModelForm):
     class Meta:
         model = Comments
         fields = ('name', 'text')
+
+
+class AuthForm(forms.Form):
+    user_name = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
