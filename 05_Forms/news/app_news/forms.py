@@ -9,8 +9,22 @@ class NewsModelForm(forms.ModelForm):
         fields = '__all__'
 
 
-class CommentsModelForm(forms.ModelForm):
+class AnonimCommentsModelForm(forms.ModelForm):
 
     class Meta:
         model = Comments
         fields = ('name', 'text')
+
+
+class AuthenticatedCommentsModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Comments
+        fields = ('text', )
+
+
+class AuthForm(forms.Form):
+    user_name = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+

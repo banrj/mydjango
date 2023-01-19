@@ -1,8 +1,10 @@
+from django.contrib.auth.views import LoginView, LogoutView
+from django.forms import HiddenInput
 from django.shortcuts import render
-from app_news.forms import NewsModelForm, CommentsModelForm
+from app_news.forms import NewsModelForm, AnonimCommentsModelForm, AuthenticatedCommentsModelForm
 from django.views import View
-from app_news.models import News, Comments
-from django.http import HttpResponseRedirect, HttpResponse
+from app_news.models import News
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
@@ -50,9 +52,16 @@ class NewsWallListView(ListView):
 
 class NewsDetailView(FormMixin, DetailView):
     model = News
-    form_class = CommentsModelForm
+    form_class = AnonimCommentsModelForm
 
-    success_msg ='Комментарий успешно создан'
+    success_msg = 'Комментарий успешно создан'
+    
+    def get_context_data(self, **kwargs):
+        context = super(NewsDetailView, self).get_context_data()
+        if context['view'].request.user.is_authenticated:
+
+            context['form'] = AuthenticatedCommentsModelForm
+        return context
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('news_detail', kwargs={'pk': self.get_object().id})
@@ -61,11 +70,26 @@ class NewsDetailView(FormMixin, DetailView):
         form = self.get_form()
 
         if form.is_valid():
-            return self.form_valid(form)
+            if request.user.is_authenticated:
+                return self.form_valid(form, user=request.user, user_name=request.user.username)
+            else:
+                name = 'Anonim({})'.format(form.instance.name)
+                return self.form_valid(form, user_name=name)
         return self.form_invalid(form)
 
-    def form_valid(self, form):
+    def form_valid(self, form, user=None, user_name=None):
         self.object = form.save(commit=False)
+        self.object.user = user
+        self.object.name = user_name
         self.object.news = self.get_object()
         self.object.save()
         return super().form_valid(form)
+
+
+class MyLoginView(LoginView):
+    template_name = 'app_news/login.html'
+    next_page = '/'
+
+
+class MyLogoutView(LogoutView):
+    next_page = '/'
