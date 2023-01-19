@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.forms import HiddenInput
 from django.shortcuts import render
-from app_news.forms import NewsModelForm, CommentsModelForm
+from app_news.forms import NewsModelForm, AnonimCommentsModelForm, AuthenticatedCommentsModelForm
 from django.views import View
 from app_news.models import News
 from django.http import HttpResponseRedirect
@@ -52,16 +52,15 @@ class NewsWallListView(ListView):
 
 class NewsDetailView(FormMixin, DetailView):
     model = News
-    form_class = CommentsModelForm
+    form_class = AnonimCommentsModelForm
 
     success_msg = 'Комментарий успешно создан'
     
     def get_context_data(self, **kwargs):
-        form = self.get_form()
         context = super(NewsDetailView, self).get_context_data()
         if context['view'].request.user.is_authenticated:
-            form.fields['name'].widget = HiddenInput()
-            context['form'] = form
+
+            context['form'] = AuthenticatedCommentsModelForm
         return context
 
     def get_success_url(self, **kwargs):
