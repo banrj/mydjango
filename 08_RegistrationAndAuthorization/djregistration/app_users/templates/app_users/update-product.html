@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update product {{ object.prodeuct_name }}</title>
+</head>
+<body>
+  <h1>Страница Входа</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+
+    <h2><a href="{% url 'product-detail' pk=object.pk %}">Вернуться к продукту</a></h2>
+</body>
+</html>

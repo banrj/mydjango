@@ -2,11 +2,11 @@ import datetime
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
-from app_users.forms import AuthForm
-from django.contrib.auth.views import LoginView, LogoutView
+from app_users.forms import AuthForm, RegisterForm
+from django.contrib.auth.views import LoginView
 
 
 def login_view(request):
@@ -38,11 +38,11 @@ def login_view(request):
         'form': auth_form
     }
 
-    return render(request, 'users/login.html', context=context)
+    return render(request, 'app_users/login.html', context=context)
 
 
 class AnotherLoginView(LoginView):
-    template_name = 'users/login.html'
+    template_name = 'app_users/login.html'
 
 
 class MainView(View):
@@ -54,3 +54,21 @@ def logout_view(request):
     logout(request)
     return HttpResponse('Вы успешно вышли из своей учетной записи!')
 
+
+def register_view(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user_name = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user_name, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = RegisterForm()
+    return render(request, 'app_users/register.html', {'form': form})
+
+
+def account_view(request):
+    return render(request, template_name='app_users/account.html')
