@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+    <h1>Интернет магазин Хуачи!   </h1>
+    {% if request.user.is_authenticated %}
+        <h3>Добро пожаловать {{ request.user.username}} </h3>
+    {% else %}
+        <a href="{% url 'login' %}">Зайти на свой профиль</a>
+    {% endif %}
+     <h2>Товары:</h2>
+    {% if products %}
+        <ul>
+            {% for product in products %}
+
+                <li>
+                    <p>Name:<a href="product/{{ product.id }}">{{ product.product_name }}</a></p>
+                    <p>Price: {{ product.price }}$</p>
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+       <bold>К сожелению товаров нет!</bold>
+    {% endif %}
+    {% if perms.app_users.add_product %}
+        <h3><a href="product/create">Создать новый товар</a></h3>
+    {% endif %}
+</body>
+</html>

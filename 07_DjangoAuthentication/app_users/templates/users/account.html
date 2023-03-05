@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if request.user.is_authenticated %}
+        <h3>аккаунт пользователя:{{ request.user.username }}</h3>
+        {{ request.user.first_name }}
+        {{ request.user.last_name }}
+        {{ request.user.second_name }}
+        {{ request.user.email }}
+    {% else %}
+        <h3>ВЫ не зарегестрированный на нашем сайте.</h3>
+        <a href="{% url 'login' %}">Войти</a>
+{%endif%}
+</body>
+</html>
