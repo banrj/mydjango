@@ -1,10 +1,12 @@
-from django.contrib.auth.views import LoginView, LogoutView, TemplateView
+from django.contrib.auth.views import LoginView, LogoutView,TemplateView
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
 from app_users.forms import RegisterForm
-from app_users.models import Profile, Product
+from app_users.models import Profile, Product, Order
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views import View
+from django.http import HttpRequest, JsonResponse
 
 
 class Register(CreateView):
@@ -30,6 +32,21 @@ class MainListView(ListView):
     template_name = 'app_users/main.html'
     model = Product
     context_object_name = 'products'
+
+
+class OrderListView(ListView):
+    queryset = (
+        Order.objects.select_related("buyer").prefetch_related("products")
+    )
+    context_object_name = 'orders'
+
+
+class OrderDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = ['app_users.view_order']
+    queryset = (
+        Order.objects.select_related("buyer").prefetch_related("products")
+    )
+    context_object_name = 'order'
 
 
 class ProductDetailView(DetailView):
@@ -73,3 +90,22 @@ class MyLoginView(LoginView):
 
 class MyLogoutView(LogoutView):
     pass
+
+
+class OrdersExportDataView(PermissionRequiredMixin, View):
+    permission_required = 'is_staff'
+    @staticmethod
+    def get(request: HttpRequest) -> JsonResponse:
+        orders = Order.objects.order_by('pk').all()
+        orders_data = [
+            {
+                "pk": order.pk,
+                "address": order.address,
+                "promo_code": order.promo_code,
+                'buyer': order.buyer.user.id,
+                'products': [product.id for product in order.products.all()]
+
+            }
+            for order in orders
+        ]
+        return JsonResponse({"orders": orders_data})

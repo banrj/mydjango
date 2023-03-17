@@ -1,0 +1,32 @@
+[
+  {
+    "model": "app_users.product",
+    "pk": 7,
+    "fields": {
+      "product_name": "Computer MOuse",
+      "price": 90,
+      "options": "Neon lightning and 100999dpi",
+      "created_by": 3
+    }
+  },
+  {
+    "model": "app_users.product",
+    "pk": 8,
+    "fields": {
+      "product_name": "keyboard",
+      "price": 99,
+      "options": "good membrane keyboard",
+      "created_by": 2
+    }
+  },
+  {
+    "model": "app_users.product",
+    "pk": 9,
+    "fields": {
+      "product_name": "Laptop",
+      "price": 600,
+      "options": "macOs 30000 ProMax",
+      "created_by": 3
+    }
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "model": "app_users.profile",
+    "pk": 1,
+    "fields": {
+      "user": 11
+    }
+  },
+  {
+    "model": "app_users.profile",
+    "pk": 2,
+    "fields": {
+      "user": 12
+    }
+  },
+  {
+    "model": "app_users.profile",
+    "pk": 3,
+    "fields": {
+      "user": 1
+    }
+  }
+]

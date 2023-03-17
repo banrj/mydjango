@@ -1,0 +1,29 @@
+[
+  {
+    "model": "app_users.order",
+    "pk": 1,
+    "fields": {
+      "address": "Ivan",
+      "promo_code": "",
+      "created_at": "2023-03-11T19:52:15.389Z",
+      "buyer": 1,
+      "products": [
+        8,
+        7
+      ]
+    }
+  },
+  {
+    "model": "app_users.order",
+    "pk": 2,
+    "fields": {
+      "address": "Moscow ul. General Sivov 3 d 42",
+      "promo_code": "apple232",
+      "created_at": "2023-03-11T22:05:26.827Z",
+      "buyer": 3,
+      "products": [
+        9
+      ]
+    }
+  }
+]

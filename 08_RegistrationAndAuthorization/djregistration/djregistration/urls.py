@@ -19,7 +19,9 @@ from app_users.views import (
     MyLoginView, MyLogoutView,
     MainListView, AccountTemplateView,
     Register, ProductDetailView,
-    ProductCreateView, ProductUpdateView
+    ProductCreateView, ProductUpdateView,
+    OrderListView, OrderDetailView,
+    OrdersExportDataView
 )
 
 urlpatterns = [
@@ -27,9 +29,12 @@ urlpatterns = [
     path('login/', MyLoginView.as_view(), name='login'),
     path('logout/', MyLogoutView.as_view(), name='logout'),
     path('', MainListView.as_view(), name='main'),
+    path("orders/", OrderListView.as_view(), name="orders_list"),
+    path("orders/<int:pk>", OrderDetailView.as_view(), name="order_detail"),
     path('account/', AccountTemplateView.as_view(), name='account'),
     path('register/', Register.as_view(), name='register'),
     path('product/<int:pk>', ProductDetailView.as_view(), name='product-detail'),
     path('product/<int:pk>/update', ProductUpdateView.as_view(), name='product-update'),
     path('product/create', ProductCreateView.as_view(), name='creat-product'),
+    path('orders/export', OrdersExportDataView.as_view(), name='order_export'),
 ]
