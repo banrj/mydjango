@@ -18,3 +18,11 @@ class Product(models.Model):
     class Meta:
         db_table = 'Products'
         ordering = ['created_by', 'id']
+
+
+class Order(models.Model):
+    address = models.TextField(null=True, blank=True)
+    promo_code = models.CharField(max_length=20, null=False, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    buyer = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    products = models.ManyToManyField(Product)
