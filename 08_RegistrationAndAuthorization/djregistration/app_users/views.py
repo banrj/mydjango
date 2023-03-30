@@ -79,6 +79,13 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('product-detail', kwargs={'pk': self.object.pk},)
 
+    def has_permission(self):
+        has_perms = super().get_permission_required()
+        if (self.request.user.profile == self.get_object().created_by
+                or self.request.user.is_superuser):
+            return self.request.user.has_perms(has_perms)
+        return False
+
 
 class AccountTemplateView(TemplateView):
     template_name = 'app_users/account.html'

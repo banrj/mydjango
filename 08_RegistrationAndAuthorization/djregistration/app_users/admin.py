@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app_users.models import Product, Order
+from app_users.models import Product, Order, Profile
 
 
 @admin.register(Product)
@@ -7,6 +7,11 @@ class AdminProduct(admin.ModelAdmin):
     list_display = ['product_name']
 
     list_filter = ['created_by']
+
+
+@admin.register(Profile)
+class AdminProfile(admin.ModelAdmin):
+    list_display = ['user']
 
 
 class ProductInline(admin.StackedInline):
