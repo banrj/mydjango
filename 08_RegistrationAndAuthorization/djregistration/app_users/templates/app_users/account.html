@@ -7,10 +7,19 @@
 <body>
     {% if request.user.is_authenticated %}
         <h3>аккаунт пользователя:{{ request.user.username }}</h3>
+        <div>
+            {% if request.user.profile.avatar %}
+                <img src="{{ request.user.profile.avatar.url }}" alt="avatarka">
+            {% else %}
+                 <p>у вас не аватара</p>
+
+            {%endif%}
+        </div>
         <div>First Name:{{ request.user.first_name }}</div>
         <div>Last Name: {{ request.user.last_name }}    </div>
         <div>Second Name: {{ request.user.second_name }}</div>
         <div>Email: {{ request.user.email }}</div>
+
     {% else %}
         <h3>ВЫ не зарегестрированный на нашем сайте.</h3>
         <a href="{% url 'login' %}">Войти</a>

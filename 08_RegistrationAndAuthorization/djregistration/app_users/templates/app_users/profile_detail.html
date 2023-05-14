@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h3>аккаунт пользователя:{{ profile.user.username }}</h3>
+    <div>
+        {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="avatarka">
+        {% else %}
+             <p>Аватар не установлен</p>
+        {%endif%}
+    {% if profile == request.user.profile or request.user.is_superuser %}
+
+        <h2><a href="{% url 'profile_update' pk=object.pk  %}"
+        >Изменить аватар</a></h2>
+    {% endif %}
+    </div>
+    <div>First Name:{{ profile.user.first_name }}</div>
+    <div>Last Name: {{ profile.user.last_name }}    </div>
+    <div>Second Name: {{ profile.user.second_name }}</div>
+    <div>Email: {{ profile.user.email }}</div>
+
+</body>
+</html>
