@@ -2,8 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+def avatar_path(instance: 'Profile', filename: str) -> str:
+    return 'users/avatar/user_{0}/{1}'.format(instance.pk, filename)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    avatar = models.ImageField(upload_to=avatar_path, null=True)
 
     class Meta:
         db_table = 'Profile'

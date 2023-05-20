@@ -13,15 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static
 from app_users.views import (
     MyLoginView, MyLogoutView,
     MainListView, AccountTemplateView,
     Register, ProductDetailView,
     ProductCreateView, ProductUpdateView,
     OrderListView, OrderDetailView,
-    OrdersExportDataView
+    OrdersExportDataView, ProfilesListView,
+    ProfileDetailView, ProfileUpdateView
 )
 
 urlpatterns = [
@@ -37,4 +40,13 @@ urlpatterns = [
     path('product/<int:pk>/update', ProductUpdateView.as_view(), name='product-update'),
     path('product/create', ProductCreateView.as_view(), name='creat-product'),
     path('orders/export', OrdersExportDataView.as_view(), name='order_export'),
+    path('profiles', ProfilesListView.as_view(), name='profile_list'),
+    path('profile/<int:pk>', ProfileDetailView.as_view(), name='profile_detail'),
+    path('profile/<int:pk>/update', ProfileUpdateView.as_view(), name='profile_update')
+
 ]
+
+if settings.DEBUG:
+    urlpatterns.extend(
+        static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    )

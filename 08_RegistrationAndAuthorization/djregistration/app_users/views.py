@@ -2,7 +2,7 @@ from django.contrib.auth.views import LoginView, LogoutView,TemplateView
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
-from app_users.forms import RegisterForm
+from app_users.forms import RegisterForm, ProfileForm
 from app_users.models import Profile, Product, Order
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views import View
@@ -116,3 +116,36 @@ class OrdersExportDataView(PermissionRequiredMixin, View):
             for order in orders
         ]
         return JsonResponse({"orders": orders_data})
+
+
+class ProfilesListView(ListView):
+    queryset = (
+        Profile.objects.all().select_related('user')
+    )
+    context_object_name = 'profiles'
+    template_name = 'app_users/profile_list.html'
+
+
+class ProfileDetailView(DetailView):
+    queryset = (
+        Profile.objects.all().select_related('user')
+    )
+    context_object_name = 'profile'
+
+
+class ProfileUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = []
+    template_name = 'app_users/profile_update.html'
+    model = Profile
+    fields = ('avatar', )
+
+    def get_success_url(self):
+        return reverse('profile_detail', kwargs={'pk': self.object.pk},)
+
+    def has_permission(self):
+        has_perm = super().has_permission()
+
+        if not has_perm:
+            return has_perm
+
+        return self.request.user.profile == self.get_object() or self.request.user.is_superuser
