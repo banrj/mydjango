@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView, LogoutView,TemplateView
+from django.contrib.auth.views import LoginView, LogoutView, TemplateView
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
@@ -6,7 +6,8 @@ from app_users.forms import RegisterForm, ProfileForm
 from app_users.models import Profile, Product, Order
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views import View
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest, JsonResponse, HttpResponse
+from django.utils.translation import gettext_lazy as _
 
 
 class Register(CreateView):
@@ -149,3 +150,10 @@ class ProfileUpdateView(PermissionRequiredMixin, UpdateView):
             return has_perm
 
         return self.request.user.profile == self.get_object() or self.request.user.is_superuser
+
+
+class HelloView(View):
+    translate_message = _("Привет, мир!")
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        return HttpResponse(self.translate_message)
