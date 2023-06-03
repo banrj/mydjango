@@ -54,7 +54,7 @@ msgstr[0] ""
 "            "
 msgstr[1] ""
 "\n"
-"            We have {count} products\n"
+"            We have %(products_count)s products\n"
 "        "
 
 #: app_users/templates/app_users/product-detail.html:9
