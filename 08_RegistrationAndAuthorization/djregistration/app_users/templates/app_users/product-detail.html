@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,17 +6,17 @@
     <title>{{ product.product_name }}</title>
 </head>
 <body>
-    <h1>Подробнее о товаре {{ product.product_name }}</h1>
-    <p>Price: {{ product.price }}$</p>
+    <h1>{% translate 'Подробнее о товаре' %} {{ product.product_name }}</h1>
+    <p>{% translate 'Price' %}  {{ product.price }}$</p>
     {% if product.options %}
-        <p>Options: {{ product.options }}</p>
+        <p>{% translate 'Options' %}: {{ product.options }}</p>
     {% else %}
-        <p>Options: отсутствует</p>
+        <p>{% translate 'Options: отсутствует' %}</p>
     {% endif %}
     {% if perms.app_users.change_product and object.created_by == user.profile or user.is_superuser %}
 
         <h2><a href="{% url 'product-update' pk=object.pk  %}"
-        >Изменить товар</a></h2>
+        >{% translate 'Изменить товар' %}</a></h2>
     {% endif %}
 </body>
 </html>
