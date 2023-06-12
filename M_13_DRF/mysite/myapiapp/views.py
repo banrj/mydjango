@@ -13,6 +13,10 @@ def hello_world_view(request: Request) -> Response:
 
 
 class ProductViewSet(ModelViewSet):
+    """
+    НАбор представления для действий над Product
+    full CRUD for model
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [SearchFilter, OrderingFilter]
