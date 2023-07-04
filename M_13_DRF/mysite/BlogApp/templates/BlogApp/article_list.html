@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Articles</title>
+</head>
+<body>
+    <h1>Articles:</h1>
+  {% if articles %}
+    <div>
+    {% for article in articles %}
+      <div>
+        <h2>{{ article.title }}</h2>
+        <p>Public: {{ article.pub_date }}</p>
+        <p>Author: {{ article.author.name }}</p>
+        <p>Category: {{ article.category.name }}</p>
+        {% if article.tags %}
+            <p>Tags:
+            {% for tag in article.tags.all %}
+                {{tag.name}}
+            {% endfor %}
+            </p>
+        {% else %}
+            <p>this article hasn`t tags </p>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    </div>
+
+  {% else %}
+    <h3>No articles yet</h3>
+  {% endif %}
+
+</body>
+</html>
