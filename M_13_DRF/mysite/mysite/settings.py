@@ -13,6 +13,22 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 
 from django.urls import reverse_lazy
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+  dsn="https://9368eb8d6ec74dd8a57cfba9659de9f2@o4505547597676544.ingest.sentry.io/4505547605344256",
+  integrations=[DjangoIntegration()],
+
+  # Set traces_sample_rate to 1.0 to capture 100%
+  # of transactions for performance monitoring.
+  # We recommend adjusting this value in production.
+  traces_sample_rate=1.0,
+
+  # If you wish to associate users to errors (assuming you are using
+  # django.contrib.auth) you may enable sending PII data.
+  send_default_pii=True
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,8 +43,22 @@ SECRET_KEY = 'django-insecure-hvxn%qq=gyw^4*o2lo1#bw0=wh#ux9s8h!=@c608arf_gz3+^7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "0.0.0.0",
+    'localhost',
+    '127.0.0.1'
+]
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+if DEBUG:
+    import socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS.append('10.0.0.2.2')
+    INTERNAL_IPS.extend(
+        [ip[: ip.rfind('.')] + '.1' for ip in ips]
+    )
 
 # Application definition
 
@@ -48,7 +78,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'django.contrib.admindocs',
-    'drf_spectacular'
+    'drf_spectacular',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -59,9 +90,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.admindocs.middleware.XViewMiddleware'
+    'django.contrib.admindocs.middleware.XViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
-
 
 ROOT_URLCONF = 'mysite.urls'
 
@@ -161,23 +192,26 @@ SPECTACULAR_SETTINGS = {
 
 LOGGING = {
     "version": 1,
-    'filters': {
-        'requirement_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue'
-        }
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['requirement_debug_true'],
-            'class': 'logging.StreamHandler'
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console']
-        }
-    }
+    "disable_existing_loggers": False,
 
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {name} {message}",
+            'style': '{'
+        }
+    },
+
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            'formatter': 'verbose',
+        },
+    },
+
+
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
 }
+

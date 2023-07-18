@@ -1,3 +1,5 @@
+import logging
+
 from timeit import default_timer
 
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, JsonResponse
@@ -11,6 +13,9 @@ from .forms import ProductForm
 from .models import Product, Order, ProductImage
 
 
+log = logging.getLogger(__name__)
+
+
 class ShopIndexView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         products = [
@@ -22,6 +27,8 @@ class ShopIndexView(View):
             "time_running": default_timer(),
             "products": products,
         }
+        log.debug("Products for shop index %s", products)
+        log.info('Info about products')
         return render(request, 'shopapp/shop-index.html', context=context)
 
 
@@ -108,4 +115,7 @@ class ProductsDataExportView(View):
             }
             for product in products
         ]
+        elem = products_data[0]
+        name = elem['name']
+        print(name)
         return JsonResponse({"products": products_data})
