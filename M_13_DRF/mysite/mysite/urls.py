@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('shop/', include('shopapp.urls')),
     path('myauth/', include('myauth.urls')),
+    path('blogapp/', include('BlogApp.urls')),
     path('api/', include('myapiapp.urls')),
     path('api/schema', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/redoc', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
@@ -31,10 +32,15 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    import debug_toolbar
     urlpatterns.extend(
         static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     )
 
     urlpatterns.extend(
         static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    )
+
+    urlpatterns.append(
+        path('__debug__/', include(debug_toolbar.urls)),
     )
