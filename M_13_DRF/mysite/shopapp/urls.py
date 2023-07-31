@@ -1,3 +1,4 @@
+from django.views.decorators.cache import cache_page
 from django.urls import path
 
 from .views import (
@@ -10,6 +11,8 @@ from .views import (
     ProductUpdateView,
     ProductDeleteView,
     ProductsDataExportView,
+    UserOrdersListView,
+    UserOrdersExportView
 )
 
 app_name = "shopapp"
@@ -23,5 +26,7 @@ urlpatterns = [
     path("products/<int:pk>/update/", ProductUpdateView.as_view(), name="product_update"),
     path("products/<int:pk>/archive/", ProductDeleteView.as_view(), name="product_delete"),
     path("orders/", OrdersListView.as_view(), name="orders_list"),
+    path("orders/user", UserOrdersListView.as_view(), name="user_orders_list"),
     path("orders/<int:pk>/", OrderDetailView.as_view(), name="order_details"),
+    path("orders/user/<int:pk>/export", UserOrdersExportView.as_view(), name="orders_export_user"),
 ]
