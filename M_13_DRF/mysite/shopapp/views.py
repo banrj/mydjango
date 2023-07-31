@@ -166,8 +166,7 @@ class UserOrdersExportView(View):
                       .select_related("user").filter(user=user)
                       .prefetch_related("products"))
             raw_data = serializers.serialize('json', orders)
-            orders_data = cache.set(cache_key, raw_data, 10)
-            print(123)
-
+            cache.set(cache_key, raw_data, 10)
+            orders_data = cache.get(cache_key)
         return JsonResponse({"user": user.username,
                              "orders": orders_data})
